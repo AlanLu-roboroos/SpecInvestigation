@@ -30,20 +30,22 @@ def quad(vel_0, theta, phi):
 
     idx = 0
     while idx * delta_t < max_t:
-        v_x.append(v_x[idx] + delta_t * cos(deg2rad(phi)) * (-k/mass)*sqrt(v_x[idx]**2 + v_y[idx]**2 + v_z[idx]**2)*v_x[idx])
-        v_y.append(v_y[idx] + delta_t * sin(deg2rad(phi)) * (-k/mass)*sqrt(v_x[idx]**2 + v_y[idx]**2 + v_z[idx]**2)*v_y[idx])
+        v_x.append(v_x[idx] + delta_t * cos(deg2rad(phi)) * (-k/mass)*sqrt(v_x[idx]**2 + v_y[idx]**2 + v_z[idx]**2)*sqrt(v_x[idx]**2 + v_y[idx]**2))
+        v_y.append(v_y[idx] + delta_t * sin(deg2rad(phi)) * (-k/mass)*sqrt(v_x[idx]**2 + v_y[idx]**2 + v_z[idx]**2)*sqrt(v_x[idx]**2 + v_y[idx]**2))
         v_z.append(v_z[idx] + delta_t * (-g - (k/mass)*sqrt(v_x[idx]**2 + v_y[idx]**2 + v_z[idx]**2)*v_z[idx]))
         idx += 1
-        x.append(x[idx-1] + delta_t * v_x[idx])
-        y.append(y[idx-1] + delta_t * v_y[idx])
-        z.append(z[idx-1] + delta_t * v_z[idx])
+        if idx % 1000 == 0:
+            print(idx * delta_t)
+        # x.append(x[idx-1] + delta_t * v_x[idx])
+        # y.append(y[idx-1] + delta_t * v_y[idx])
+        # z.append(z[idx-1] + delta_t * v_z[idx])
         # print(f"idx: {idx}, v_x: {v_x[idx]}, v_y: {v_y[idx]}")
-    return x, y, z
+    return v_x, v_y, v_z
 
 
 x, y, z = quad(vel_0, theta, phi)
 
-with open("out.txt", "w") as f:
+with open("out1.txt", "w") as f:
     for i in range(0, len(x)):
         f.write(f"{x[i]} {y[i]} {z[i]}\n")
 

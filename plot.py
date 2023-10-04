@@ -9,20 +9,21 @@ fig = plt.figure()
 ax: plt.Axes = fig.add_subplot(projection='3d')
 
 if len(argv) > 1:
-    inputFile = argv[1]
-    with open(inputFile, "r") as f:
-        data = f.readlines()
+    for i in range(1, len(argv)):
+        inputFile = argv[i]
+        with open(inputFile, "r") as f:
+            data = f.readlines()
 
-    qx = []
-    qy = []
-    qz = []
-    for line in data:
-        temp = line.split()
-        qx.append(float(temp[0]))
-        qy.append(float(temp[1]))
-        qz.append(float(temp[2]))
+        qx = []
+        qy = []
+        qz = []
+        for line in data:
+            temp = line.split()
+            qx.append(float(temp[0]))
+            qy.append(float(temp[1]))
+            qz.append(float(temp[2]))
 
-    ax.plot(qx, qy, qz, label='quad air resistance')
+        ax.plot(qx, qy, qz, label=f"data: {i}")
 
 x_0 = 0
 y_0 = 0
@@ -52,7 +53,7 @@ def lz(vel_0, theta, phi):
     return (mass/c)*(g*mass/c + vel_0*np.sin(deg2rad(theta)))*(1-np.exp(-c*time/mass))-g*mass*time/c+z_0  # type: ignore
 
 
-# ax.plot(lx(vel_0, theta, phi), ly(vel_0, theta, phi), lz(vel_0, theta, phi), label='linear air resistance')
+ax.plot(lx(vel_0, theta, phi), ly(vel_0, theta, phi), lz(vel_0, theta, phi), label='linear air resistance')
 
 # No Air Resistance
 def nx(vel_0, theta, phi):

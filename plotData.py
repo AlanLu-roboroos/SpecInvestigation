@@ -9,13 +9,16 @@ ax: plt.Axes = fig.add_subplot()
 x = []
 y = []
 
-with open(argv[1], "r") as f:
-    data = f.readlines()
+for i in range(1, len(argv)):
+    with open(argv[i], "r") as f:
+        data = f.readlines()
 
-for line in data:
-    temp = line.split()
-    x.append(float(temp[0]))
-    y.append(float(temp[1]))
+    x.append([])
+    y.append([])
+    for line in data:
+        temp = line.split()
+        x[i-1].append(float(temp[0]))
+        y[i-1].append(float(temp[1]))
 
 def deg2rad(ang):
     return ang * math.pi / 180
@@ -39,12 +42,14 @@ y_0 = 0
 z_0 = 0
 
 
-ax.plot(nx(vel_0, theta), nz(vel_0, theta), label='no air resistance')
+# ax.plot(nx(vel_0, theta), nz(vel_0, theta), label='no air resistance')
 
-ax.plot(x, y, label="quad")
+for i in range(0, len(x)):
+    ax.plot(x[i], y[i], label=f"data: {i}")
+
 ax.legend()
 ax.set_xlim(left=-10, right=10)
 ax.set_ylim(top=10, bottom=-10)
-ax.set_aspect('equal')
+# ax.set_aspect('equal')
 
 plt.show()
